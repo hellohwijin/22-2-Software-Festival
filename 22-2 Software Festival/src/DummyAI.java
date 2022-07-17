@@ -18,16 +18,15 @@ public class DummyAI {
 		String color = scanner.nextLine();
 		
 		//베타고에서 사용하기 위한 머시깽이... ----------------------------------------
-		
-		Betago.getBoard();
-		
+
 		if (color.toLowerCase().compareTo("white") == 0) {
 			mine = 2;
 			opponent = 1;
 		} else if (color.toLowerCase().compareTo("black") == 0) {
 			mine = 1;
 			opponent = 2;
-		} //----------------------------------------------------------------
+		} 
+		//----------------------------------------------------------------
 		
 		ConnectSix conSix = new ConnectSix(ip, port, color); //making instance of ConnectSix as name conSix
 		System.out.println("Red Stone positions are " + conSix.redStones);
@@ -40,12 +39,17 @@ public class DummyAI {
 		}
 		
 		while (true) {
+			String draw;
+			
+			/*
 			char alpha1 = (char) ((Math.random() * 19) + 'A');
 			int num1 = (int)( Math.random() * 19) + 1;
 			char alpha2 = (char) ((Math.random() * 19) + 'A');
 			int num2 = (int)( Math.random() * 19) + 1;
+			draw = String.format("%c%02d:%c%02d", alpha1, num1, alpha2, num2);
+			*/
 			
-			String draw = String.format("%c%02d:%c%02d", alpha1, num1, alpha2, num2);
+			draw = Betago.returnStringCoor();
 			
 			String read = conSix.drawAndRead(draw);
 			

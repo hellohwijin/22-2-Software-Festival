@@ -1,6 +1,9 @@
 
 public class Betago {
 	
+	//모든 돌이 놓일 때 마다 addWeight 실행시켜주고,
+	//AI턴에서는 returnPoint로 받아오기
+	
 	static int color = DummyAI.getMyColor();
 	static int opponent = DummyAI.getYourColor();
 	private static int[][] playBoard = new int[19][19];
@@ -11,31 +14,38 @@ public class Betago {
 		playBoard = B.board;
 	}
 	
-	//string 형태 좌표를 베타고가 인식 가능한 숫자형태로 박과주기..? 
-	public String intCoorToString(String yours) {
-		
-		return "";
-		
-	}
 	
-	//input string to thisX,Y (integer form)
-	public static void stringCoorToInt(String stone) {
-		
-		String lowerCaseStone = stone.toLowerCase();
-		int letter = lowerCaseStone.charAt(0);
-		int tenth = lowerCaseStone.charAt(1);
-		int units = lowerCaseStone.charAt(2);
 
-		thisX = letter - 'a'; //i //근데 I 제외해야하는거아님?
-		if(letter > 'i') thisX--;
-		//a b c d e f g h // j k l  n  m  o  p  q  r  s  t
-		//0 1 2 3 4 5 6 7 // 8 9 10 11 12 13 14 15 16 17 18 
-		thisY = (tenth - '0') * 10 + (units - '0') - 1; //j
+	//integer 형태의 이상적 좌표를 형식에 맞춘 String으로 바꿔 리턴(다음에 놓을 그거임. 스톤 하나하나 기준.)
+	public static String returnStringCoor() {
 		
-		//usage: board[i][j]
+		
+		returnPoint();
+		//System.out.println("now x and y is "+x+", "+y);
+		//x, y를 바탕으로 String형태의 머시깽이...
+		String stone1 = String.format("%c%02d", (char)((x<8)?(x+'A'):(x+'A'+1)), y+1);
+		
+		
+		//일단여기는절대두지말라는뜻!!!! board를 직접 수정하면 NOTEMPTY에러가 나서 임시방편으로... 
+		weight[x][y] = -100000;
+		//방금 자기가 놓은거 업데이트해주고 
+		addWeight(x, y);
+		
+
+		returnPoint();
+		//System.out.println("now x and y is "+x+", "+y);
+		String stone2 = String.format("%c%02d", (char)((x<8)?(x+'A'):(x+'A'+1)), y+1);
+
+		
+		String result = stone1 + ":" + stone2;
+		//System.out.println(result);
+		return result;
 		
 	}
 	
+	
+	
+
 	
 	
 	
@@ -48,18 +58,12 @@ public class Betago {
   static int[][] weight = new int[19][19]; // 일반가중치(계속 누적)
   static int[][] superWeight = new int[19][19]; // 특수가중치(매 분석마다 리셋후 시작)
   
-  
-  static int thisX, thisY;
-  
+
   
   // 가중치 기본 누적하기 (매 실행 후에)
-  public static void addWeight(String thisString) {
+  public static void addWeight(int x, int y) {
 	  
-	  stringCoorToInt(thisString);
-	  
-	  int x = thisX;
-	  int y = thisY;
-	  
+
       int n = 1; // 누적할 가중치의 양. 내 돌인지 상대 돌인지에 따라 달라짐.
 
       if (playBoard[x][y] == 1) //black
@@ -67,18 +71,17 @@ public class Betago {
       else if (playBoard[x][y] == 2) //white
           n = 1;
       else if (playBoard[x][y] == 3) { // 중립구 취급
-          weight[x][y] = -1;
-          superWeight[x][y] = -1;
+          weight[x][y] = -100;
           return;
-      } else
-          return; // 이미 놓여진곳 취급
+      } else return; // 이미 놓여진곳 취급
+      
+      weight[x][y] = -10000;
 
       // 팔방을 뒤져서 이미 놓여진 곳만 아니라면 가중치 누적.
       for (int i = x - 1; i < x + 2; i++) {
           for (int j = y - 1; j < y + 2; j++) {
               if (i == x && j == y) { // 본인자리에는 -1
-                  weight[x][y] = -1;
-                  superWeight[x][y] = -1;
+                  weight[x][y] = -10000;
               } else {
                   try {
                       if (playBoard[i][j] == 0)
@@ -92,9 +95,8 @@ public class Betago {
   }
 
   
-  
   // 판 읽고 특수가중치 누적하기
-  public static void addSuperWeight() {
+  private static void addSuperWeight() {
 
       // 특수가중치 판 초기화
       for (int i = 0; i < 19; i++) {
@@ -2321,8 +2323,10 @@ public class Betago {
   
   
   // 일반가중치+특수가중치 판에서 최대 가중치를 찾아 x,y 값 저장해주기
-  public static void returnPoint(int[][] board) {
-
+  public static void returnPoint() {
+	  
+	  addSuperWeight();
+	  
       int max = 0;
       for (int i = 0; i < 19; i++) {
           for (int j = 0; j < 19; j++) {
@@ -2351,7 +2355,7 @@ public class Betago {
 
   
   
-  
+  //공격을 그대로 카피해서 만든 방어...수정 요함. TODO 
   static void testTest(int myCount, int add) {
 
       //// 한방오리백숙

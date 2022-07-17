@@ -266,7 +266,7 @@ public class ConnectSix {
 		}
 	}
 
-	//한방오리백숙
+
 	private String readStones() throws ConnSixException {
 		byte[] numBytes = new byte[4];
 		String result = null;
@@ -352,6 +352,13 @@ public class ConnectSix {
 			}
 
 			board[i][j] = color; //update Board yeah 
+			
+			
+			
+			Betago.addWeight(i, j);
+			
+			
+			
 			return null;
 		}
 		
