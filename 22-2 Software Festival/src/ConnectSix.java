@@ -40,6 +40,8 @@ public class ConnectSix {
 	 * The String type field that contains the positions of the red stones. The positions will follow the strict notation explained above.
 	 */
 	public String redStones = null;
+	
+	
 
 	/**
 	 * Creates an instance of the class ConnectSix and connects to the single mode server.
@@ -56,6 +58,8 @@ public class ConnectSix {
 	 */
 	public ConnectSix(String ip, int port, String color) throws ConnSixException {
 		this.board = new Board();
+		//추가함!!! 거 보드 베타고랑도 공유하자는 행위 
+		Betago.getBoard(this.board);
 
 		this.redStones = letsConnect(ip, port, color);
 	}
@@ -102,6 +106,7 @@ public class ConnectSix {
 		} else {
 			throw new ConnSixException("Incorrect stone color input. Input white or black.");
 		}
+		
 
 		String redString = null;
 		try {
@@ -127,6 +132,8 @@ public class ConnectSix {
 		return redString;
 	}
 
+	
+	
 	/**
 	 * Sends the position of the user's next move to the single mode server and returns the opponent's next move.
 	 * The first move of black must be "K10" and the first move of white must be "", an empty String.
@@ -151,14 +158,17 @@ public class ConnectSix {
 	 */
 	public String drawAndRead(String draw) throws ConnSixException {
 		
+		//if input parameter is not blank, call the drawStones() with that input string
 		if (draw.toLowerCase().compareTo("") != 0) {
 			drawStones(draw);
 		}
 		
+		//specify that next one is not a first stone.
 		if(this.firstStone == true) {
 			this.firstStone = false;
 		}
 		
+		//return the return value of readStrons()
 		return readStones();
 	}
 
@@ -203,12 +213,14 @@ public class ConnectSix {
 		return byteArray;
 	}
 
+	
 	private void drawStones(String draw) throws ConnSixException {
-		String drawValid = getValid(draw);
+		String drawValid = getValid(draw); //make the input value valid
 		String error = null;
 
-		String[] stones = drawValid.split(":");
-
+		String[] stones = drawValid.split(":"); //to the 2 string array
+		
+		//determine whether input is BADINPUT...
 		if (this.firstStone == true && this.color == BLACK) {
 			if (stones.length != 1 && stones[0].toLowerCase().compareTo("k10") != 0) {
 				error = "BADINPUT";
@@ -222,25 +234,28 @@ public class ConnectSix {
 		else if (stones.length != 2) {
 			error = "BADINPUT";
 		}
-
+		
+		//call updateBoard() with inputs. if error exist, save at 'error' variable
 		for (String stone : stones) {
 			String err = this.board.updateBoard(stone, this.color);
-			if (err != null) {
+			if (err != null) { 
 				error = err;
 				break;
 			}
 		}
 
 		String message = "";
-		if (error != null) {
+		if (error != null) { // if error exist, display it
 			message = error + "$" + draw;
-		} else {
+		} else { //if not, just show the coordinates just drew.
 			message = drawValid;
 		}
-
+		
+		//make message as byte form
 		byte[] send = message.getBytes();
 		int messageLength = send.length;
-
+		
+		//sending message to single server to show to person.
 		try {
 			output.write(intToByte(messageLength));
 			output.write(send);
@@ -251,6 +266,7 @@ public class ConnectSix {
 		}
 	}
 
+	//한방오리백숙
 	private String readStones() throws ConnSixException {
 		byte[] numBytes = new byte[4];
 		String result = null;
@@ -277,21 +293,25 @@ public class ConnectSix {
 
 		return result;
 	}
-
+	
+	//change the input string valid
 	private String getValid(String input) {
-		String[] stones = input.split(":");
+		String[] stones = input.split(":"); //split first
 		for (int i = 0; i < stones.length; i++) {
-			stones[i] = stones[i].toUpperCase();
-			if (stones[i].length() == 2) {
+			stones[i] = stones[i].toUpperCase(); //change to Upper Case (a11 -> A11)
+			if (stones[i].length() == 2) { //if number is under 10, put 0 in front of the number (1 -> 01)
 				stones[i] = stones[i].charAt(0) + "0" + stones[i].charAt(1);
 			}
 		}
 
-		return String.join(":", stones);
+		return String.join(":", stones); //join and return
 	}
 	
-	private class Board {
-		private int[][] board = new int[19][19];
+	//보드 여깄다!!!!
+	//private class Board {
+	class Board {
+		//private int[][] board = new int[19][19];
+		public int[][] board = new int[19][19];
 		
 		Board() {
 			for(int i = 0; i < 19; i++) {
@@ -331,7 +351,7 @@ public class ConnectSix {
 				return "NOTEMPTY";
 			}
 
-			board[i][j] = color;
+			board[i][j] = color; //update Board yeah 
 			return null;
 		}
 		

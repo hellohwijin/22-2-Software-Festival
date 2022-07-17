@@ -1,7 +1,14 @@
 import java.util.Scanner;
 
 public class DummyAI {
+	
+	static int mine;
+	static int opponent;
+	
+	
+	//main method
 	public static void main(String[] args) throws Exception {
+		
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Input the ip address > ");
 		String ip = scanner.nextLine();
@@ -10,9 +17,22 @@ public class DummyAI {
 		System.out.print("Input the color > ");
 		String color = scanner.nextLine();
 		
-		ConnectSix conSix = new ConnectSix(ip, port, color);
+		//베타고에서 사용하기 위한 머시깽이... ----------------------------------------
+		
+		Betago.getBoard();
+		
+		if (color.toLowerCase().compareTo("white") == 0) {
+			mine = 2;
+			opponent = 1;
+		} else if (color.toLowerCase().compareTo("black") == 0) {
+			mine = 1;
+			opponent = 2;
+		} //----------------------------------------------------------------
+		
+		ConnectSix conSix = new ConnectSix(ip, port, color); //making instance of ConnectSix as name conSix
 		System.out.println("Red Stone positions are " + conSix.redStones);
-
+		
+		//if AI choose black, start with one stone at the middle of the board.
 		if (color.toLowerCase().compareTo("black") == 0) {
 			String first = conSix.drawAndRead("K10");
 		} else if (color.toLowerCase().compareTo("white") == 0) {
@@ -35,4 +55,43 @@ public class DummyAI {
 		}
 
 	}
+	
+	// return the AI color. black = 1, white = 2, red = 3, empty = 0
+	public static int getMyColor() {
+		return mine;
+	}
+	// return the person color. black = 1, white = 2, red = 3, empty = 0
+		public static int getYourColor() {
+			return opponent;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
