@@ -1,4 +1,4 @@
-
+//dd
 public class Betago {
 	
 	//모든 돌이 놓일 때 마다 addWeight 실행시켜주고,
