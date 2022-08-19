@@ -202,20 +202,20 @@ public class Betago {
                            try {
                                if (playBoard[i][j] == 0 && playBoard[i - 1][j - 1] != color) {
                                    if (playBoard[i + 6][j + 6] == 0) {
-                                       superWeight[i][j] += 40;
-                                       superWeight[i + 6][j + 6] += 40;
+                                       superWeight[i][j] += 500;
+                                       superWeight[i + 6][j + 6] += 500;
                                        return;
                                    } else if (playBoard[i + 6][j + 6] == opponent) {
-                                       superWeight[i][j] += 40;
+                                       superWeight[i][j] += 500;
                                        return;
                                    }
                                } else if (playBoard[i + 5][j + 5] == 0 && playBoard[i - 6][j - 6] != color) {
                                    if (playBoard[i - 1][j - 1] == 0) {
-                                       superWeight[i - 1][j - 1] += 40;
-                                       superWeight[i + 5][j + 5] += 40;
+                                       superWeight[i - 1][j - 1] += 500;
+                                       superWeight[i + 5][j + 5] += 500;
                                        return;
                                    } else if (playBoard[i - 1][j - 1] == opponent) {
-                                       superWeight[i + 5][j + 5] += 40;
+                                       superWeight[i + 5][j + 5] += 500;
                                        return;
                                    }
                                }
@@ -226,7 +226,7 @@ public class Betago {
                        else if (playBoard[i - 1][j - 1] != color && playBoard[i + 6][j + 6] != color) {
                            for (int k = 0; k < 6; k++) {
                                if (playBoard[i + k][j + k] == 0) {
-                                   superWeight[i + k][j + k] += 40;
+                                   superWeight[i + k][j + k] += 500;
                                    return;
                                }
                            }
@@ -241,16 +241,16 @@ public class Betago {
                                if (playBoard[i + k][j + k] == color) {
                                    if (playBoard[i + k - 1][j + k - 1] == 0
                                            && playBoard[i + k + 4][j + k + 4] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       superWeight[i + k + 4][j + k + 4] += 40;
+                                       superWeight[i + k - 1][j + k - 1] += 500;
+                                       superWeight[i + k + 4][j + k + 4] += 500;
                                        return;
                                    } else if (playBoard[i - 1][j - 1] == opponent
                                            && playBoard[i + k + 4][j + k + 4] == 0) {
-                                       superWeight[i + k + 4][j + k + 4] += 40;
+                                       superWeight[i + k + 4][j + k + 4] += 500;
                                        return;
                                    } else if (playBoard[i + 4][j + 4] == opponent
                                            && playBoard[i + k - 1][j + k - 1] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
+                                       superWeight[i + k - 1][j + k - 1] += 500;
                                        return;
                                    }
                                }
@@ -264,14 +264,14 @@ public class Betago {
                                if (playBoard[i + k][j + k] == color
                                        && playBoard[i + k + 4][j + k + 4] == color) {
                                    if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       superWeight[i + k + 5][j + k + 5] += 40;
+                                       superWeight[i + k - 1][j + k - 1] += 500;
+                                       superWeight[i + k + 5][j + k + 5] += 500;
                                        return;
                                    } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == opponent) {
-                                       superWeight[i + k + 5][j + k + 5] += 40;
+                                       superWeight[i + k + 5][j + k + 5] += 500;
                                        return;
                                    } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == opponent) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
+                                       superWeight[i + k - 1][j + k - 1] += 500;
                                        return;
                                    }
                                }
@@ -279,9 +279,9 @@ public class Betago {
                                else if (playBoard[i + k][j + k] == color && playBoard[i + k + 3][j + k + 3] == 0
                                        && playBoard[i + k + 4][j + k + 4] == 0) {
                                    if (weight[i + k + 3][j + k + 3] > weight[i + k + 4][j + k + 4]) {
-                                       superWeight[i + k + 3][j + k + 3] += 40;
+                                       superWeight[i + k + 3][j + k + 3] += 500;
                                    } else {
-                                       superWeight[i + k + 4][j + k + 4] += 40;
+                                       superWeight[i + k + 4][j + k + 4] += 500;
                                    }
                                    return;
                                }
@@ -294,23 +294,23 @@ public class Betago {
                                if (playBoard[i + k][j + k] == color) {
                                    // 2연속 1공백 2
                                    if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       superWeight[i + k + 5][j + k + 5] += 40;
+                                       superWeight[i + k - 1][j + k - 1] += 500;
+                                       superWeight[i + k + 5][j + k + 5] += 500;
                                        return;
                                    } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == opponent) {
-                                       superWeight[i + k + 5][j + k + 5] += 40;
+                                       superWeight[i + k + 5][j + k + 5] += 500;
                                        return;
                                    } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == opponent) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
+                                       superWeight[i + k - 1][j + k - 1] += 500;
                                        return;
                                    }
                                    // 2연속 2공백 2
                                    else if (playBoard[i + k + 2][j + k + 2] == 0
                                            && playBoard[i + k + 3][j + k + 3] == 0) {
                                        if (weight[i + k + 2][j + k + 2] > weight[i + k + 3][j + k + 3]) {
-                                           superWeight[i + k + 2][j + k + 2] += 40;
+                                           superWeight[i + k + 2][j + k + 2] += 500;
                                        } else {
-                                           superWeight[i + k + 3][j + k + 3] += 40;
+                                           superWeight[i + k + 3][j + k + 3] += 500;
                                        }
                                        return;
                                    }
@@ -325,23 +325,23 @@ public class Betago {
                                if (playBoard[i + k][j + k] == color
                                        && playBoard[i + k + 2][j + k + 2] == color) {
                                    if (playBoard[i + k - 1][i + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                       superWeight[i + k - 1][i + k - 1] += 40;
-                                       superWeight[i + k + 5][j + k + 5] += 40;
+                                       superWeight[i + k - 1][i + k - 1] += 500;
+                                       superWeight[i + k + 5][j + k + 5] += 500;
                                        return;
                                    } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == opponent) {
-                                       superWeight[i + k + 5][j + k + 5] += 40;
+                                       superWeight[i + k + 5][j + k + 5] += 500;
                                        return;
                                    } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == opponent) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
+                                       superWeight[i + k - 1][j + k - 1] += 500;
                                        return;
                                    }
                                }
                                // 1 2공백 3연속
                                else if (playBoard[i + k][j + k] == color) {
                                    if (weight[i + k + 1][j + k + 1] > weight[i + k + 2][j + k + 2]) {
-                                       superWeight[i + k + 1][j + k + 1] += 40;
+                                       superWeight[i + k + 1][j + k + 1] += 500;
                                    } else {
-                                       superWeight[i + k + 2][j + k + 2] += 40;
+                                       superWeight[i + k + 2][j + k + 2] += 500;
                                    }
                                    return;
                                }
@@ -812,20 +812,20 @@ public class Betago {
                           try {
                               if (playBoard[i][j] == 0 && playBoard[i - 1][j - 1] != opponent) {
                                   if (playBoard[i + 6][j + 6] == 0) {
-                                      superWeight[i][j] += 40;
-                                      superWeight[i + 6][j + 6] += 40;
+                                      superWeight[i][j] += 500;
+                                      superWeight[i + 6][j + 6] += 500;
                                       return;
                                   } else if (playBoard[i + 6][j + 6] == color) {
-                                      superWeight[i][j] += 40;
+                                      superWeight[i][j] += 500;
                                       return;
                                   }
                               } else if (playBoard[i + 5][j + 5] == 0 && playBoard[i - 6][j - 6] != opponent) {
                                   if (playBoard[i - 1][j - 1] == 0) {
-                                      superWeight[i - 1][j - 1] += 40;
-                                      superWeight[i + 5][j + 5] += 40;
+                                      superWeight[i - 1][j - 1] += 500;
+                                      superWeight[i + 5][j + 5] += 500;
                                       return;
                                   } else if (playBoard[i - 1][j - 1] == color) {
-                                      superWeight[i + 5][j + 5] += 40;
+                                      superWeight[i + 5][j + 5] += 500;
                                       return;
                                   }
                               }
@@ -836,7 +836,7 @@ public class Betago {
                       else if (playBoard[i - 1][j - 1] != opponent && playBoard[i + 6][j + 6] != opponent) {
                           for (int k = 0; k < 6; k++) {
                               if (playBoard[i + k][j + k] == 0) {
-                                  superWeight[i + k][j + k] += 40;
+                                  superWeight[i + k][j + k] += 500;
                                   return;
                               }
                           }
@@ -851,16 +851,16 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent) {
                                   if (playBoard[i + k - 1][j + k - 1] == 0
                                           && playBoard[i + k + 4][j + k + 4] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 4][j + k + 4] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i - 1][j - 1] == color
                                           && playBoard[i + k + 4][j + k + 4] == 0) {
-                                      superWeight[i + k + 4][j + k + 4] += 40;
+                                      superWeight[i + k + 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i + 4][j + 4] == color
                                           && playBoard[i + k - 1][j + k - 1] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -874,14 +874,14 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent
                                       && playBoard[i + k + 4][j + k + 4] == opponent) {
                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == color) {
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == color) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -889,9 +889,9 @@ public class Betago {
                               else if (playBoard[i + k][j + k] == opponent && playBoard[i + k + 3][j + k + 3] == 0
                                       && playBoard[i + k + 4][j + k + 4] == 0) {
                                   if (weight[i + k + 3][j + k + 3] > weight[i + k + 4][j + k + 4]) {
-                                      superWeight[i + k + 3][j + k + 3] += 40;
+                                      superWeight[i + k + 3][j + k + 3] += 500;
                                   } else {
-                                      superWeight[i + k + 4][j + k + 4] += 40;
+                                      superWeight[i + k + 4][j + k + 4] += 500;
                                   }
                                   return;
                               }
@@ -904,23 +904,23 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent) {
                                   // 2연속 1공백 2
                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == color) {
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == color) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                                   // 2연속 2공백 2
                                   else if (playBoard[i + k + 2][j + k + 2] == 0
                                           && playBoard[i + k + 3][j + k + 3] == 0) {
                                       if (weight[i + k + 2][j + k + 2] > weight[i + k + 3][j + k + 3]) {
-                                          superWeight[i + k + 2][j + k + 2] += 40;
+                                          superWeight[i + k + 2][j + k + 2] += 500;
                                       } else {
-                                          superWeight[i + k + 3][j + k + 3] += 40;
+                                          superWeight[i + k + 3][j + k + 3] += 500;
                                       }
                                       return;
                                   }
@@ -935,23 +935,23 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent
                                       && playBoard[i + k + 2][j + k + 2] == opponent) {
                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == color) {
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == color) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
                               // 1 2공백 3연속
                               else if (playBoard[i + k][j + k] == opponent) {
                                   if (weight[i + k + 1][j + k + 1] > weight[i + k + 2][j + k + 2]) {
-                                      superWeight[i + k + 1][j + k + 1] += 40;
+                                      superWeight[i + k + 1][j + k + 1] += 500;
                                   } else {
-                                      superWeight[i + k + 2][j + k + 2] += 40;
+                                      superWeight[i + k + 2][j + k + 2] += 500;
                                   }
                                   return;
                               }
@@ -991,20 +991,20 @@ public class Betago {
                           try {
                               if (playBoard[i][j] == 0 && playBoard[i + 1][j - 1] != opponent) {
                                   if (playBoard[i - 6][j + 6] == 0) {
-                                      superWeight[i][j] += 40;
-                                      superWeight[i - 6][j + 6] += 40;
+                                      superWeight[i][j] += 500;
+                                      superWeight[i - 6][j + 6] += 500;
                                       return;
                                   } else if (playBoard[i - 6][j + 6] == color) {
-                                      superWeight[i][j] += 40;
+                                      superWeight[i][j] += 500;
                                       return;
                                   }
                               } else if (playBoard[i - 5][j + 5] == 0 && playBoard[i - 6][j + 6] != opponent) {
                                   if (playBoard[i - 1][j + 1] == 0) {
-                                      superWeight[i - 1][j + 1] += 40;
-                                      superWeight[i - 5][j + 5] += 40;
+                                      superWeight[i - 1][j + 1] += 500;
+                                      superWeight[i - 5][j + 5] += 500;
                                       return;
                                   } else if (playBoard[i + 1][j - 1] == color) {
-                                      superWeight[i - 5][j + 5] += 40;
+                                      superWeight[i - 5][j + 5] += 500;
                                       return;
                                   }
                               }
@@ -1015,7 +1015,7 @@ public class Betago {
                       else if (playBoard[i + 1][j - 1] != opponent && playBoard[i - 6][j + 6] != opponent) {
                           for (int k = 0; k < 6; k++) {
                               if (playBoard[i - k][j + k] == 0) {
-                                  superWeight[i - k][j + k] += 40;
+                                  superWeight[i - k][j + k] += 500;
                                   return;
                               }
                           }
@@ -1029,16 +1029,16 @@ public class Betago {
                               // 4개 연속
                               if (playBoard[i - k][j + k] == opponent) {
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 4][j + k + 4] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 4][j + k + 4] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i + 1][j - 1] == color
                                           && playBoard[i - k - 4][j + k + 4] == 0) {
-                                      superWeight[i - k - 4][j + k + 4] += 40;
+                                      superWeight[i - k - 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i - 4][j + 4] == color
                                           && playBoard[i - k + 1][j + k - 1] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -1052,14 +1052,14 @@ public class Betago {
                               if (playBoard[i - k][j + k] == opponent
                                       && playBoard[i - k - 4][j + k + 4] == opponent) {
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 5][j + k + 5] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i - k + 1][j + k - 1] == color) {
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i - k - 5][j + k + 5] == color) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -1067,9 +1067,9 @@ public class Betago {
                               else if (playBoard[i - k][j + k] == opponent && playBoard[i - k - 3][j + k + 3] == 0
                                       && playBoard[i - k - 4][j + k + 4] == 0) {
                                   if (weight[i - k - 3][j + k + 3] > weight[i - k - 4][j + k + 4]) {
-                                      superWeight[i - k - 3][j + k + 3] += 40;
+                                      superWeight[i - k - 3][j + k + 3] += 500;
                                   } else {
-                                      superWeight[i - k - 4][j + k + 4] += 40;
+                                      superWeight[i - k - 4][j + k + 4] += 500;
                                   }
                                   return;
                               }
@@ -1082,23 +1082,23 @@ public class Betago {
                               if (playBoard[i - k][j + k] == opponent) {
                                   // 2연속 1공백 2
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 5][j + k + 5] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i - k + 1][j + k - 1] == color) {
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i - k - 5][j + k + 5] == color) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                                   // 2연속 2공백 2
                                   else if (playBoard[i - k - 2][j + k + 2] == 0
                                           && playBoard[i - k - 3][j + k + 3] == 0) {
                                       if (weight[i - k - 2][j + k + 2] > weight[i - k - 3][j + k + 3]) {
-                                          superWeight[i - k - 2][j + k + 2] += 40;
+                                          superWeight[i - k - 2][j + k + 2] += 500;
                                       } else {
-                                          superWeight[i - k + 3][j - k + 3] += 40;
+                                          superWeight[i - k + 3][j - k + 3] += 500;
                                       }
                                       return;
                                   }
@@ -1113,23 +1113,23 @@ public class Betago {
                               if (playBoard[i - k][j + k] == opponent
                                       && playBoard[i - k - 2][j + k + 2] == opponent) {
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 5][j + k + 5] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i - k + 1][j + k - 1] == color) {
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i - k - 5][j + k + 5] == color) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
                               // 1 2공백 3연속
                               else if (playBoard[i - k][j + k] == opponent) {
                                   if (weight[i - k - 1][j + k + 1] > weight[i - k - 2][j + k + 2]) {
-                                      superWeight[i - k - 1][j + k + 1] += 40;
+                                      superWeight[i - k - 1][j + k + 1] += 500;
                                   } else {
-                                      superWeight[i - k - 2][j + k + 2] += 40;
+                                      superWeight[i - k - 2][j + k + 2] += 500;
                                   }
                                   return;
                               }
