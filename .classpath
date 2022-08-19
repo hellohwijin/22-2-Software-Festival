@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="22-2 Software Festival/src"/>
+	<classpathentry kind="src" path="Connect6/src"/>
+	<classpathentry kind="output" path="Connect6/bin"/>
+</classpath>
