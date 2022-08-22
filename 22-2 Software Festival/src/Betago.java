@@ -66,7 +66,7 @@ public class Betago {
       else if (playBoard[x][y] == 2) //white
           n = 1;
       else if (playBoard[x][y] == 3) { // 중립구 취급
-          weight[x][y] = -100;
+          weight[x][y] = -10000;
           return;
       } else return; // 이미 놓여진곳 취급
       
@@ -125,12 +125,12 @@ public class Betago {
 	 		 //if((j == 0 || j > 0 && playBoard[i][j - 1] != color) && (j + 5 == 18 || j + 5 < 18 && playBoard[i][j + 6] != color)) {
 	 		if((j - 1 >= 0 && playBoard[i][j - 1] != color) && (j + 6 <= 18 && playBoard[i][j + 6] != color)) {
 	 	     		
-	 			 //System.out.println("세로 공격로 진입. " + i+" : "+j);
+	 			System.out.println("세로 공격로 진입. " + i+" : "+j);
 	 			 
 	 			for(int k = 0; k < 6; k++) { //13~18
 	    			 if(playBoard[i][j+k] == 0 && weight[i][j+k] >= 0) {
 	    				 superWeight[i][j+k] += 500;
-						//System.out.println("가중치 부여됨 " + i+" : "+j+k);
+						 System.out.println("가중치 부여됨 " + i+" : "+j+k);
 						 return;
 	    			 }
 	    		 }
@@ -157,11 +157,11 @@ public class Betago {
 			 //if((i == 0 || i > 0 && playBoard[i - 1][j] != color) && (i + 5 == 18 || i + 5 < 18 && playBoard[i + 6][j] != color)) {
 			if((i -1 >= 0 && playBoard[i - 1][j] != color) && (i + 6 <= 18 && playBoard[i + 6][j] != color)) {
 		      		
-				 //System.out.println("가로 공격로 진입." + i+" : "+j);
+				System.out.println("가로 공격로 진입." + i+" : "+j);
 				for(int k = 0; k < 6; k++) { //13~18
 		   			 if(playBoard[i+k][j] == 0 && weight[i+k][j] >= 0) {
 		   				superWeight[i+k][j] += 500;
-						//System.out.println("가중치 부여됨 " + i+" : "+j+k);
+						System.out.println("가중치 부여됨 " + i+" : "+j+k);
 						return;
 		   			 }
 				}
@@ -263,7 +263,12 @@ public class Betago {
                   } catch (ArrayIndexOutOfBoundsException e) { }
               }
 
-
+              
+              System.out.println("가로 방어로 진입." + i+" : "+j);
+              
+              
+              
+              
               if(myCount == 5) {
                   try {
                       //연속
@@ -1042,7 +1047,7 @@ public class Betago {
           }
       }
       
-      //showWeight();
+      showWeight();
 
   }
 
@@ -1050,7 +1055,8 @@ public class Betago {
   
   // 현재 가중치 상태 콘솔에 출력
   public static void showWeight() {
-      for (int i = 0; i < 19; i++) {
+      for (int i = 18; i >= 0; i--) {
+      //for (int i = 18; i <= 0; i--) {
           for (int j = 0; j < 19; j++) {
               System.out.printf("[%2d]", weight[j][i]);
           }
