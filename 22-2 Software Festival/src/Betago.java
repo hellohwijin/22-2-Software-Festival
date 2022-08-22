@@ -39,18 +39,13 @@ public class Betago {
 		
 		String result = stone1 + ":" + stone2;
 		//System.out.println(result);
+		
 		return result;
 		
 	}
 	
 	
 	
-
-	
-	
-	
-	
-
   // 현재 산출된 이상적 좌표
   static int x;
   static int y;
@@ -105,76 +100,80 @@ public class Betago {
           }
       }
 
-      int myCount = 0, emptyCount = 0;
-      int add = 0; // 현재 가중치 몇번 누적했는지(두번 넘어가면 그만찾고 리턴. 어차피 한 턴에 두번밖에 못 두니까..)
-
+      int myCount = 0, emptyCount = 0, check;
+      
       //// 놓으면 이길 때(한방승리)
-      //// -------------------------------------------------------------------------------------
+      //-------------------------------------------------------------------------------------
 
+      
+      
+      
       // 세로 공격 시작점 ----------------------------------------------------------------------
-
       for(int i = 0; i < 19; i++) { //0~18
-     	 
-     	 for(int j = 0; j < 14; j++) { //0~12
-     		 
-     		 myCount = 0;
-     		 emptyCount = 0;
-     		 
-     		 for(int k = j; k < j + 6; k++) { //13~18
-     			 if(playBoard[i][k] == color) myCount++;
-     			 else if(playBoard[i][k] == 0) emptyCount++;
-     			 
-     		 }
-    
-     		 if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) break;
-     		 
-     		 if((j == 0 || j > 0 && playBoard[i][j - 1] != color) && (j + 5 == 18 || j + 5 < 18 && playBoard[i][j + 6] != color)) {
-     			 for(int l = j; l < j + 6; l++) {
- 					 if(playBoard[i][l] == 0) {
- 						 superWeight[i][l] += 500;
- 						 return;
- 					 }
- 				 }
-     		 }
-     		 
-     	 }
+	 	 for(int j = 0; j < 14; j++) { //0~12
+	 		 
+	 		 myCount = 0;
+	 		 emptyCount = 0;
+	 		 
+	 		for(int k = 0; k < 6; k++) { //13~18
+	   			 if(playBoard[i][j+k] == color) myCount++;
+	   			 else if(playBoard[i][j+k] == 0) emptyCount++;
+	 		}
+	
+	 		 if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) continue;
+	 		 
+	 		 //if((j == 0 || j > 0 && playBoard[i][j - 1] != color) && (j + 5 == 18 || j + 5 < 18 && playBoard[i][j + 6] != color)) {
+	 		if((j - 1 >= 0 && playBoard[i][j - 1] != color) && (j + 6 <= 18 && playBoard[i][j + 6] != color)) {
+	 	     		
+	 			 //System.out.println("세로 공격로 진입. " + i+" : "+j);
+	 			 
+	 			for(int k = 0; k < 6; k++) { //13~18
+	    			 if(playBoard[i][j+k] == 0 && weight[i][j+k] >= 0) {
+	    				 superWeight[i][j+k] += 500;
+						//System.out.println("가중치 부여됨 " + i+" : "+j+k);
+						 return;
+	    			 }
+	    		 }
+	 		 }
+	 	 }
       }
 
      
-       // 가로 공격 시작점 -------------------------------------------------------------------------------------------------
-       for(int j = 0; j < 19; j++) {
-     	  
-      	 for(int i = 0; i < 14; i++) {
-      		 
-      		 myCount = 0;
-      		 emptyCount = 0;
-      		 
-      		 for(int k = i; k < i + 6; k++) {
-      			 if(playBoard[k][j] == color) myCount++;
-      			 else if(playBoard[k][j] == 0) emptyCount++;
-      			 
-      		 }
-      		 
-      		if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) break;
-      		 
-      		 
-      		 if((i == 0 || i > 0 && playBoard[i - 1][j] != color) && (i + 5 == 18 || i + 5 < 18 && playBoard[i + 6][j] != color)) {
-      			for(int l = i; l < i + 6; l++) {
- 					 if(playBoard[i][l] == 0) {
- 						 superWeight[i][l] += 500;
- 						 return;
- 					 }
- 				 }
-      		 }
-      		 
-      	 }
-       }
+      // 가로 공격 시작점 -------------------------------------------------------------------------------------------------
+      for(int j = 0; j < 19; j++) {
+		 for(int i = 0; i < 14; i++) {
+			 
+			 myCount = 0;
+			 emptyCount = 0;
+			 
+			 for(int k = 0; k < 6; k++) {
+				 if(playBoard[i+k][j] == color) myCount++;
+				 else if(playBoard[i+k][j] == 0) emptyCount++;
+			 }
+			 
+			if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) continue;
+			 
+			 
+			 //if((i == 0 || i > 0 && playBoard[i - 1][j] != color) && (i + 5 == 18 || i + 5 < 18 && playBoard[i + 6][j] != color)) {
+			if((i -1 >= 0 && playBoard[i - 1][j] != color) && (i + 6 <= 18 && playBoard[i + 6][j] != color)) {
+		      		
+				 //System.out.println("가로 공격로 진입.");
+				for(int k = 0; k < 6; k++) { //13~18
+		   			 if(playBoard[i+k][j] == 0 && weight[i+k][j] >= 0) {
+		   				superWeight[i+k][j] += 500;
+						//System.out.println("가중치 부여됨 " + i+" : "+j+k);
+						return;
+		   			 }
+				}
+			 }
+		 }
+      }
+       
+       
+       
+       // 좌대각 우대각 공격 시작점 ------------------------------------------
        
 
-
-      // 좌대각 공격 시작점 ------------------------------------------------------------
-
-       int check;
        for (int i = 0; i < 19; i++) {
            for (int j = 0; j < 19; j++) {
                myCount = 0;
@@ -194,7 +193,6 @@ public class Betago {
                    } catch (ArrayIndexOutOfBoundsException e) {
                    }
                }
-               // 5 왼쪽 위에서 오른쪽 아래(좌대각\) 방어
                if (myCount == 5) {
                    try {
                        // 연속
@@ -353,8 +351,12 @@ public class Betago {
            }
        }
        
-       // 우대각 공격 시작점 -------------------------------------------------------------
-       //??
+       // ???? -------------------------------------------------------------
+    
+       
+       
+       
+       
        
        
 
@@ -599,8 +601,7 @@ public class Betago {
               }
 
 
-           // 5 왼쪽 위에서 오른쪽 아래(좌대각\) 방어
-              if(myCount == 5) {
+           if(myCount == 5) {
                   try {
                       //연속
                       if(check == 5) {
@@ -783,7 +784,7 @@ public class Betago {
       
       
       
-      //좌대각 방어 시작점 ------------------------------------------------------------------------
+      //좌대각)\) 방어 시작점 ------------------------------------------------------------------------
       
       for (int i = 0; i < 19; i++) {
           for (int j = 0; j < 19; j++) {
@@ -1147,13 +1148,8 @@ public class Betago {
 
   }
 
-      //// 본인 전개 플러스점수
-      //// ---------------------------------------------------------------------------------
-      // 연결 양끝으로 연결갯수*2의 가중치 더하기
-
-      // 상대 방해 플러스점수
-      // --------------------------------------------------------------------------------------
-      // 연결 양끝으로 연결횟수만큼의 가중치 더하기
+      //// 전개 플러스점수
+      //6개 범위 내에서 나의/상대의 돌 갯수와 빈칸의 합이 6이라면 빈칸에 나의/상대의 돌 *10만큼 가중치 주기. 
 
   
 
@@ -1174,6 +1170,8 @@ public class Betago {
               }
           }
       }
+      
+      //showWeight();
 
   }
 
