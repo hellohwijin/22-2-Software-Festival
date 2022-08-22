@@ -39,18 +39,13 @@ public class Betago {
 		
 		String result = stone1 + ":" + stone2;
 		//System.out.println(result);
+		
 		return result;
 		
 	}
 	
 	
 	
-
-	
-	
-	
-	
-
   // 현재 산출된 이상적 좌표
   static int x;
   static int y;
@@ -105,257 +100,135 @@ public class Betago {
           }
       }
 
-      int myCount = 0, emptyCount = 0;
-      int add = 0; // 현재 가중치 몇번 누적했는지(두번 넘어가면 그만찾고 리턴. 어차피 한 턴에 두번밖에 못 두니까..)
-
+      int myCount = 0, emptyCount = 0, check;
+      
       //// 놓으면 이길 때(한방승리)
-      //// -------------------------------------------------------------------------------------
+      //-------------------------------------------------------------------------------------
 
+      
+      
+      
       // 세로 공격 시작점 ----------------------------------------------------------------------
-
       for(int i = 0; i < 19; i++) { //0~18
-     	 
-     	 for(int j = 0; j < 14; j++) { //0~12
-     		 
-     		 myCount = 0;
-     		 emptyCount = 0;
-     		 
-     		 for(int k = j; k < j + 6; k++) { //13~18
-     			 if(playBoard[i][k] == color) myCount++;
-     			 else if(playBoard[i][k] == 0) emptyCount++;
-     			 
-     		 }
-    
-     		 if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) break;
-     		 
-     		 if((j == 0 || j > 0 && playBoard[i][j - 1] != color) && (j + 5 == 18 || j + 5 < 18 && playBoard[i][j + 6] != color)) {
-     			 for(int l = j; l < j + 6; l++) {
- 					 if(playBoard[i][l] == 0) {
- 						 superWeight[i][l] += 500;
- 						 return;
- 					 }
- 				 }
-     		 }
-     		 
-     	 }
+	 	 for(int j = 0; j < 14; j++) { //0~12
+	 		 
+	 		 myCount = 0;
+	 		 emptyCount = 0;
+	 		 
+	 		for(int k = 0; k < 6; k++) { //13~18
+	   			 if(playBoard[i][j+k] == color) myCount++;
+	   			 else if(playBoard[i][j+k] == 0) emptyCount++;
+	 		}
+	
+	 		 if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) continue;
+	 		 
+	 		 //if((j == 0 || j > 0 && playBoard[i][j - 1] != color) && (j + 5 == 18 || j + 5 < 18 && playBoard[i][j + 6] != color)) {
+	 		if((j - 1 >= 0 && playBoard[i][j - 1] != color) && (j + 6 <= 18 && playBoard[i][j + 6] != color)) {
+	 	     		
+	 			 //System.out.println("세로 공격로 진입. " + i+" : "+j);
+	 			 
+	 			for(int k = 0; k < 6; k++) { //13~18
+	    			 if(playBoard[i][j+k] == 0 && weight[i][j+k] >= 0) {
+	    				 superWeight[i][j+k] += 500;
+						//System.out.println("가중치 부여됨 " + i+" : "+j+k);
+						 return;
+	    			 }
+	    		 }
+	 		 }
+	 	 }
       }
 
      
-       // 가로 공격 시작점 -------------------------------------------------------------------------------------------------
-       for(int j = 0; j < 19; j++) {
-     	  
-      	 for(int i = 0; i < 14; i++) {
-      		 
-      		 myCount = 0;
-      		 emptyCount = 0;
-      		 
-      		 for(int k = i; k < i + 6; k++) {
-      			 if(playBoard[k][j] == color) myCount++;
-      			 else if(playBoard[k][j] == 0) emptyCount++;
-      			 
-      		 }
-      		 
-      		if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) break;
-      		 
-      		 
-      		 if((i == 0 || i > 0 && playBoard[i - 1][j] != color) && (i + 5 == 18 || i + 5 < 18 && playBoard[i + 6][j] != color)) {
-      			for(int l = i; l < i + 6; l++) {
- 					 if(playBoard[i][l] == 0) {
- 						 superWeight[i][l] += 500;
- 						 return;
- 					 }
- 				 }
-      		 }
-      		 
-      	 }
-       }
+      // 가로 공격 시작점 -------------------------------------------------------------------------------------------------
+      for(int j = 0; j < 19; j++) {
+		 for(int i = 0; i < 14; i++) {
+			 
+			 myCount = 0;
+			 emptyCount = 0;
+			 
+			 for(int k = 0; k < 6; k++) {
+				 if(playBoard[i+k][j] == color) myCount++;
+				 else if(playBoard[i+k][j] == 0) emptyCount++;
+			 }
+			 
+			if(!(myCount + emptyCount == 6) || !(emptyCount == 1 || emptyCount == 2)) continue;
+			 
+			 
+			 //if((i == 0 || i > 0 && playBoard[i - 1][j] != color) && (i + 5 == 18 || i + 5 < 18 && playBoard[i + 6][j] != color)) {
+			if((i -1 >= 0 && playBoard[i - 1][j] != color) && (i + 6 <= 18 && playBoard[i + 6][j] != color)) {
+		      		
+				 //System.out.println("가로 공격로 진입." + i+" : "+j);
+				for(int k = 0; k < 6; k++) { //13~18
+		   			 if(playBoard[i+k][j] == 0 && weight[i+k][j] >= 0) {
+		   				superWeight[i+k][j] += 500;
+						//System.out.println("가중치 부여됨 " + i+" : "+j+k);
+						return;
+		   			 }
+				}
+			 }
+		 }
+      }
        
 
+      
+   // 좌대각 공격 시작점 ----------------------------------------------------------------------
+      for(int i = 0; i < 14; i++) { //0~13
+       for(int j = 0; j < 14; j++) { //0~13
+           
+           myCount = 0;
+           emptyCount = 0;
+           
+           for(int k = 0; k < 6; k++) { //13~18, 본인부터 본인+5, 왼쪽아래로 내려가니까 좌대각 \
+               if(playBoard[i+k][j+k] == color) myCount++;
+               else if(playBoard[i+k][j+k] == 0) emptyCount++;
+           }
 
-      // 좌대각 공격 시작점 ------------------------------------------------------------
+           if(!(myCount + emptyCount == 6) || (emptyCount > 2)) continue;
+           
+           if(((i-1 >= 0 && j-1 >= 0) && playBoard[i-1][j - 1] != color) && ((i+6 <= 18 && j+6 <= 18) && playBoard[i+6][j+6] != color)) {
+               System.out.println("좌대각 공격로 진입." + i+" : "+j);
 
-       int check;
-       for (int i = 0; i < 19; i++) {
-           for (int j = 0; j < 19; j++) {
-               myCount = 0;
-               check = 0;
-               for (int k = 0; k < 6; k++) {
-                   try {
-                       if (playBoard[i + k][j + k] == color) {
-                           myCount++;
-                       } else if (playBoard[i + k][j + k] == opponent) {
-                           myCount = 0;
-                           break;
-                       } else if (playBoard[i + k][j + k] == 0) {
-                           if (check == 0 && myCount != 0)
-                               check = myCount;
-                       }
-
-                   } catch (ArrayIndexOutOfBoundsException e) {
-                   }
-               }
-               // 5 왼쪽 위에서 오른쪽 아래(좌대각\) 방어
-               if (myCount == 5) {
-                   try {
-                       // 연속
-                       if (check == 5) {
-                           try {
-                               if (playBoard[i][j] == 0 && playBoard[i - 1][j - 1] != color) {
-                                   if (playBoard[i + 6][j + 6] == 0) {
-                                       superWeight[i][j] += 40;
-                                       superWeight[i + 6][j + 6] += 40;
-                                       return;
-                                   } else if (playBoard[i + 6][j + 6] == opponent) {
-                                       superWeight[i][j] += 40;
-                                       return;
-                                   }
-                               } else if (playBoard[i + 5][j + 5] == 0 && playBoard[i - 6][j - 6] != color) {
-                                   if (playBoard[i - 1][j - 1] == 0) {
-                                       superWeight[i - 1][j - 1] += 40;
-                                       superWeight[i + 5][j + 5] += 40;
-                                       return;
-                                   } else if (playBoard[i - 1][j - 1] == opponent) {
-                                       superWeight[i + 5][j + 5] += 40;
-                                       return;
-                                   }
-                               }
-                           } catch (ArrayIndexOutOfBoundsException e) {
-                           }
-                       }
-                       // 중간에 공백 있음
-                       else if (playBoard[i - 1][j - 1] != color && playBoard[i + 6][j + 6] != color) {
-                           for (int k = 0; k < 6; k++) {
-                               if (playBoard[i + k][j + k] == 0) {
-                                   superWeight[i + k][j + k] += 40;
-                                   return;
-                               }
-                           }
-                       }
-                   } catch (ArrayIndexOutOfBoundsException e) {
-                   }
-               } else if (myCount == 4) {
-                   if (check == 4) {
-                       for (int k = 0; k < 6; k++) {
-                           try {
-                               // 4개 연속
-                               if (playBoard[i + k][j + k] == color) {
-                                   if (playBoard[i + k - 1][j + k - 1] == 0
-                                           && playBoard[i + k + 4][j + k + 4] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       superWeight[i + k + 4][j + k + 4] += 40;
-                                       return;
-                                   } else if (playBoard[i - 1][j - 1] == opponent
-                                           && playBoard[i + k + 4][j + k + 4] == 0) {
-                                       superWeight[i + k + 4][j + k + 4] += 40;
-                                       return;
-                                   } else if (playBoard[i + 4][j + 4] == opponent
-                                           && playBoard[i + k - 1][j + k - 1] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       return;
-                                   }
-                               }
-                           } catch (ArrayIndexOutOfBoundsException e) {
-                           }
-                       }
-                   } else if (check == 3) {
-                       for (int k = 0; k < 6; k++) {
-                           try {
-                               // 3연속 1 공백 1
-                               if (playBoard[i + k][j + k] == color
-                                       && playBoard[i + k + 4][j + k + 4] == color) {
-                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       superWeight[i + k + 5][j + k + 5] += 40;
-                                       return;
-                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == opponent) {
-                                       superWeight[i + k + 5][j + k + 5] += 40;
-                                       return;
-                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == opponent) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       return;
-                                   }
-                               }
-                               // 3연속 2공백 1
-                               else if (playBoard[i + k][j + k] == color && playBoard[i + k + 3][j + k + 3] == 0
-                                       && playBoard[i + k + 4][j + k + 4] == 0) {
-                                   if (weight[i + k + 3][j + k + 3] > weight[i + k + 4][j + k + 4]) {
-                                       superWeight[i + k + 3][j + k + 3] += 40;
-                                   } else {
-                                       superWeight[i + k + 4][j + k + 4] += 40;
-                                   }
-                                   return;
-                               }
-                           } catch (ArrayIndexOutOfBoundsException e) {
-                           }
-                       }
-                   } else if (check == 2) {
-                       for (int k = 0; k < 6; k++) {
-                           try {
-                               if (playBoard[i + k][j + k] == color) {
-                                   // 2연속 1공백 2
-                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       superWeight[i + k + 5][j + k + 5] += 40;
-                                       return;
-                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == opponent) {
-                                       superWeight[i + k + 5][j + k + 5] += 40;
-                                       return;
-                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == opponent) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       return;
-                                   }
-                                   // 2연속 2공백 2
-                                   else if (playBoard[i + k + 2][j + k + 2] == 0
-                                           && playBoard[i + k + 3][j + k + 3] == 0) {
-                                       if (weight[i + k + 2][j + k + 2] > weight[i + k + 3][j + k + 3]) {
-                                           superWeight[i + k + 2][j + k + 2] += 40;
-                                       } else {
-                                           superWeight[i + k + 3][j + k + 3] += 40;
-                                       }
-                                       return;
-                                   }
-                               }
-                           } catch (ArrayIndexOutOfBoundsException e) {
-                           }
-                       }
-                   } else if (check == 1) {
-                       for (int k = 0; k < 6; k++) {
-                           try {
-                               // 1 1공백 3연속
-                               if (playBoard[i + k][j + k] == color
-                                       && playBoard[i + k + 2][j + k + 2] == color) {
-                                   if (playBoard[i + k - 1][i + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                       superWeight[i + k - 1][i + k - 1] += 40;
-                                       superWeight[i + k + 5][j + k + 5] += 40;
-                                       return;
-                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == opponent) {
-                                       superWeight[i + k + 5][j + k + 5] += 40;
-                                       return;
-                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == opponent) {
-                                       superWeight[i + k - 1][j + k - 1] += 40;
-                                       return;
-                                   }
-                               }
-                               // 1 2공백 3연속
-                               else if (playBoard[i + k][j + k] == color) {
-                                   if (weight[i + k + 1][j + k + 1] > weight[i + k + 2][j + k + 2]) {
-                                       superWeight[i + k + 1][j + k + 1] += 40;
-                                   } else {
-                                       superWeight[i + k + 2][j + k + 2] += 40;
-                                   }
-                                   return;
-                               }
-                           } catch (ArrayIndexOutOfBoundsException e) {
-                           }
-                       }
+               for(int k = 0; k < 6; k++) { //빈칸에 가중치 쏴주고 리턴 
+                   if(playBoard[i+k][j+k] == 0 && weight[i+k][j+k] >= 0) {
+                       superWeight[i+k][j+k] += 500;
+                       System.out.println("가중치 부여됨 " + i+" : "+j+k);
+                       return;
                    }
                }
            }
        }
-       
-       // 우대각 공격 시작점 -------------------------------------------------------------
-       //??
-       
+   }
+
+   
+   // 우대각 공격 시작점 ----------------------------------------------------------------------
+   for(int i = 5; i < 19; i++) { //5~18
+       for(int j = 0; j < 14; j++) { //0~13
+           
+           myCount = 0;
+           emptyCount = 0;
+           
+           for(int k = 0; k < 6; k++) { //13~18, 본인부터...오른쪽아래로 내려가니까 우대각 /
+               if(playBoard[i-k][j+k] == color) myCount++;
+               else if(playBoard[i-k][j+k] == 0) emptyCount++;
+           }
+
+           if(!(myCount + emptyCount == 6) || (emptyCount > 2)) continue; 
+           
+           if(((i+1 <=18&& j-1 >= 0) && playBoard[i+1][j - 1] != color) && ((i-6 >= 0 && j+6 <= 18) && playBoard[i-6][j+6] != color)) {
+               for(int k = 0; k < 6; k++) { //빈칸에 가중치 쏴주고 리턴
+                   
+                   System.out.println("우대각 공격로 진입." + i+" : "+j);
+                   
+                   if(playBoard[i-k][j+k] == 0 && weight[i-k][j+k] >= 0){
+                       superWeight[i-k][j+k] += 500;
+                       System.out.println("가중치 부여됨 " + i+" : "+j+k);
+                       return;
+                   } 
+               }
+           }
+       }
+   }
+
        
 
       //// 안놓으면 질 때, 한방방어
@@ -599,8 +472,7 @@ public class Betago {
               }
 
 
-           // 5 왼쪽 위에서 오른쪽 아래(좌대각\) 방어
-              if(myCount == 5) {
+           if(myCount == 5) {
                   try {
                       //연속
                       if(check == 5) {
@@ -783,7 +655,7 @@ public class Betago {
       
       
       
-      //좌대각 방어 시작점 ------------------------------------------------------------------------
+      //좌대각)\) 방어 시작점 ------------------------------------------------------------------------
       
       for (int i = 0; i < 19; i++) {
           for (int j = 0; j < 19; j++) {
@@ -812,20 +684,20 @@ public class Betago {
                           try {
                               if (playBoard[i][j] == 0 && playBoard[i - 1][j - 1] != opponent) {
                                   if (playBoard[i + 6][j + 6] == 0) {
-                                      superWeight[i][j] += 40;
-                                      superWeight[i + 6][j + 6] += 40;
+                                      superWeight[i][j] += 500;
+                                      superWeight[i + 6][j + 6] += 500;
                                       return;
                                   } else if (playBoard[i + 6][j + 6] == color) {
-                                      superWeight[i][j] += 40;
+                                      superWeight[i][j] += 500;
                                       return;
                                   }
                               } else if (playBoard[i + 5][j + 5] == 0 && playBoard[i - 6][j - 6] != opponent) {
                                   if (playBoard[i - 1][j - 1] == 0) {
-                                      superWeight[i - 1][j - 1] += 40;
-                                      superWeight[i + 5][j + 5] += 40;
+                                      superWeight[i - 1][j - 1] += 500;
+                                      superWeight[i + 5][j + 5] += 500;
                                       return;
                                   } else if (playBoard[i - 1][j - 1] == color) {
-                                      superWeight[i + 5][j + 5] += 40;
+                                      superWeight[i + 5][j + 5] += 500;
                                       return;
                                   }
                               }
@@ -836,7 +708,7 @@ public class Betago {
                       else if (playBoard[i - 1][j - 1] != opponent && playBoard[i + 6][j + 6] != opponent) {
                           for (int k = 0; k < 6; k++) {
                               if (playBoard[i + k][j + k] == 0) {
-                                  superWeight[i + k][j + k] += 40;
+                                  superWeight[i + k][j + k] += 500;
                                   return;
                               }
                           }
@@ -851,16 +723,16 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent) {
                                   if (playBoard[i + k - 1][j + k - 1] == 0
                                           && playBoard[i + k + 4][j + k + 4] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 4][j + k + 4] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i - 1][j - 1] == color
                                           && playBoard[i + k + 4][j + k + 4] == 0) {
-                                      superWeight[i + k + 4][j + k + 4] += 40;
+                                      superWeight[i + k + 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i + 4][j + 4] == color
                                           && playBoard[i + k - 1][j + k - 1] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -874,14 +746,14 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent
                                       && playBoard[i + k + 4][j + k + 4] == opponent) {
                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == color) {
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == color) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -889,9 +761,9 @@ public class Betago {
                               else if (playBoard[i + k][j + k] == opponent && playBoard[i + k + 3][j + k + 3] == 0
                                       && playBoard[i + k + 4][j + k + 4] == 0) {
                                   if (weight[i + k + 3][j + k + 3] > weight[i + k + 4][j + k + 4]) {
-                                      superWeight[i + k + 3][j + k + 3] += 40;
+                                      superWeight[i + k + 3][j + k + 3] += 500;
                                   } else {
-                                      superWeight[i + k + 4][j + k + 4] += 40;
+                                      superWeight[i + k + 4][j + k + 4] += 500;
                                   }
                                   return;
                               }
@@ -904,23 +776,23 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent) {
                                   // 2연속 1공백 2
                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == color) {
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == color) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                                   // 2연속 2공백 2
                                   else if (playBoard[i + k + 2][j + k + 2] == 0
                                           && playBoard[i + k + 3][j + k + 3] == 0) {
                                       if (weight[i + k + 2][j + k + 2] > weight[i + k + 3][j + k + 3]) {
-                                          superWeight[i + k + 2][j + k + 2] += 40;
+                                          superWeight[i + k + 2][j + k + 2] += 500;
                                       } else {
-                                          superWeight[i + k + 3][j + k + 3] += 40;
+                                          superWeight[i + k + 3][j + k + 3] += 500;
                                       }
                                       return;
                                   }
@@ -935,23 +807,23 @@ public class Betago {
                               if (playBoard[i + k][j + k] == opponent
                                       && playBoard[i + k + 2][j + k + 2] == opponent) {
                                   if (playBoard[i + k - 1][j + k - 1] == 0 && playBoard[i + k + 5][j + k + 5] == 0) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i + k - 1][j + k - 1] == color) {
-                                      superWeight[i + k + 5][j + k + 5] += 40;
+                                      superWeight[i + k + 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i + k + 5][j + k + 5] == color) {
-                                      superWeight[i + k - 1][j + k - 1] += 40;
+                                      superWeight[i + k - 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
                               // 1 2공백 3연속
                               else if (playBoard[i + k][j + k] == opponent) {
                                   if (weight[i + k + 1][j + k + 1] > weight[i + k + 2][j + k + 2]) {
-                                      superWeight[i + k + 1][j + k + 1] += 40;
+                                      superWeight[i + k + 1][j + k + 1] += 500;
                                   } else {
-                                      superWeight[i + k + 2][j + k + 2] += 40;
+                                      superWeight[i + k + 2][j + k + 2] += 500;
                                   }
                                   return;
                               }
@@ -991,20 +863,20 @@ public class Betago {
                           try {
                               if (playBoard[i][j] == 0 && playBoard[i + 1][j - 1] != opponent) {
                                   if (playBoard[i - 6][j + 6] == 0) {
-                                      superWeight[i][j] += 40;
-                                      superWeight[i - 6][j + 6] += 40;
+                                      superWeight[i][j] += 500;
+                                      superWeight[i - 6][j + 6] += 500;
                                       return;
                                   } else if (playBoard[i - 6][j + 6] == color) {
-                                      superWeight[i][j] += 40;
+                                      superWeight[i][j] += 500;
                                       return;
                                   }
                               } else if (playBoard[i - 5][j + 5] == 0 && playBoard[i - 6][j + 6] != opponent) {
                                   if (playBoard[i - 1][j + 1] == 0) {
-                                      superWeight[i - 1][j + 1] += 40;
-                                      superWeight[i - 5][j + 5] += 40;
+                                      superWeight[i - 1][j + 1] += 500;
+                                      superWeight[i - 5][j + 5] += 500;
                                       return;
                                   } else if (playBoard[i + 1][j - 1] == color) {
-                                      superWeight[i - 5][j + 5] += 40;
+                                      superWeight[i - 5][j + 5] += 500;
                                       return;
                                   }
                               }
@@ -1015,7 +887,7 @@ public class Betago {
                       else if (playBoard[i + 1][j - 1] != opponent && playBoard[i - 6][j + 6] != opponent) {
                           for (int k = 0; k < 6; k++) {
                               if (playBoard[i - k][j + k] == 0) {
-                                  superWeight[i - k][j + k] += 40;
+                                  superWeight[i - k][j + k] += 500;
                                   return;
                               }
                           }
@@ -1029,16 +901,16 @@ public class Betago {
                               // 4개 연속
                               if (playBoard[i - k][j + k] == opponent) {
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 4][j + k + 4] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 4][j + k + 4] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i + 1][j - 1] == color
                                           && playBoard[i - k - 4][j + k + 4] == 0) {
-                                      superWeight[i - k - 4][j + k + 4] += 40;
+                                      superWeight[i - k - 4][j + k + 4] += 500;
                                       return;
                                   } else if (playBoard[i - 4][j + 4] == color
                                           && playBoard[i - k + 1][j + k - 1] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -1052,14 +924,14 @@ public class Betago {
                               if (playBoard[i - k][j + k] == opponent
                                       && playBoard[i - k - 4][j + k + 4] == opponent) {
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 5][j + k + 5] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i - k + 1][j + k - 1] == color) {
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i - k - 5][j + k + 5] == color) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
@@ -1067,9 +939,9 @@ public class Betago {
                               else if (playBoard[i - k][j + k] == opponent && playBoard[i - k - 3][j + k + 3] == 0
                                       && playBoard[i - k - 4][j + k + 4] == 0) {
                                   if (weight[i - k - 3][j + k + 3] > weight[i - k - 4][j + k + 4]) {
-                                      superWeight[i - k - 3][j + k + 3] += 40;
+                                      superWeight[i - k - 3][j + k + 3] += 500;
                                   } else {
-                                      superWeight[i - k - 4][j + k + 4] += 40;
+                                      superWeight[i - k - 4][j + k + 4] += 500;
                                   }
                                   return;
                               }
@@ -1082,23 +954,23 @@ public class Betago {
                               if (playBoard[i - k][j + k] == opponent) {
                                   // 2연속 1공백 2
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 5][j + k + 5] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i - k + 1][j + k - 1] == color) {
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i - k - 5][j + k + 5] == color) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                                   // 2연속 2공백 2
                                   else if (playBoard[i - k - 2][j + k + 2] == 0
                                           && playBoard[i - k - 3][j + k + 3] == 0) {
                                       if (weight[i - k - 2][j + k + 2] > weight[i - k - 3][j + k + 3]) {
-                                          superWeight[i - k - 2][j + k + 2] += 40;
+                                          superWeight[i - k - 2][j + k + 2] += 500;
                                       } else {
-                                          superWeight[i - k + 3][j - k + 3] += 40;
+                                          superWeight[i - k + 3][j - k + 3] += 500;
                                       }
                                       return;
                                   }
@@ -1113,23 +985,23 @@ public class Betago {
                               if (playBoard[i - k][j + k] == opponent
                                       && playBoard[i - k - 2][j + k + 2] == opponent) {
                                   if (playBoard[i - k + 1][j + k - 1] == 0 && playBoard[i - k - 5][j + k + 5] == 0) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 0 && playBoard[i - k + 1][j + k - 1] == color) {
-                                      superWeight[i - k - 5][j + k + 5] += 40;
+                                      superWeight[i - k - 5][j + k + 5] += 500;
                                       return;
                                   } else if (k == 1 && playBoard[i - k - 5][j + k + 5] == color) {
-                                      superWeight[i - k + 1][j + k - 1] += 40;
+                                      superWeight[i - k + 1][j + k - 1] += 500;
                                       return;
                                   }
                               }
                               // 1 2공백 3연속
                               else if (playBoard[i - k][j + k] == opponent) {
                                   if (weight[i - k - 1][j + k + 1] > weight[i - k - 2][j + k + 2]) {
-                                      superWeight[i - k - 1][j + k + 1] += 40;
+                                      superWeight[i - k - 1][j + k + 1] += 500;
                                   } else {
-                                      superWeight[i - k - 2][j + k + 2] += 40;
+                                      superWeight[i - k - 2][j + k + 2] += 500;
                                   }
                                   return;
                               }
@@ -1147,13 +1019,8 @@ public class Betago {
 
   }
 
-      //// 본인 전개 플러스점수
-      //// ---------------------------------------------------------------------------------
-      // 연결 양끝으로 연결갯수*2의 가중치 더하기
-
-      // 상대 방해 플러스점수
-      // --------------------------------------------------------------------------------------
-      // 연결 양끝으로 연결횟수만큼의 가중치 더하기
+      //// 전개 플러스점수
+      //6개 범위 내에서 나의/상대의 돌 갯수와 빈칸의 합이 6이라면 빈칸에 나의/상대의 돌 *10만큼 가중치 주기. 
 
   
 
@@ -1174,6 +1041,8 @@ public class Betago {
               }
           }
       }
+      
+      //showWeight();
 
   }
 
