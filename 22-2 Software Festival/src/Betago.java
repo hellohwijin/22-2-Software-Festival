@@ -35,7 +35,8 @@ public class Betago {
 		returnPoint();
 		//System.out.println("now x and y is "+x+", "+y);
 		String stone2 = String.format("%c%02d", (char)((x<8)?(x+'A'):(x+'A'+1)), y+1);
-
+		addWeight(x, y);
+		
 		
 		String result = stone1 + ":" + stone2;
 		//System.out.println(result);
