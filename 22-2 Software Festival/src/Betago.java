@@ -27,7 +27,7 @@ public class Betago {
 		
 		
 		//일단여기는절대두지말라는뜻!!!! board를 직접 수정하면 NOTEMPTY에러가 나서 임시방편으로... 
-		weight[x][y] = -100000;
+		weight[x][y] = -10000;
 		//방금 자기가 놓은거 업데이트해주고 
 		addWeight(x, y);
 		
@@ -60,11 +60,11 @@ public class Betago {
   public static void addWeight(int x, int y) {
 	  
 
-      int n = 1; // 누적할 가중치의 양. 내 돌인지 상대 돌인지에 따라 달라짐.
+      int n = 1; // 누적할 가중치의 양. 내 돌인지 상대 돌인지에 따라 달라짐. //근데 이게 의미가 있을까요? 
 
-      if (playBoard[x][y] == 1) //black
+      if (playBoard[x][y] == color) //black
           n = 2;
-      else if (playBoard[x][y] == 2) //white
+      else if (playBoard[x][y] == opponent) //white
           n = 1;
       else if (playBoard[x][y] == 3) { // 중립구 취급
           weight[x][y] = -10000;
@@ -101,14 +101,12 @@ public class Betago {
           }
       }
 
-      int myCount = 0, emptyCount = 0, check;
-      
+      int myCount = 0, yourCount = 0, emptyCount = 0, check;
+
       //// 놓으면 이길 때(한방승리)
       //-------------------------------------------------------------------------------------
 
-      
-      
-      
+
       // 세로 공격 시작점 ----------------------------------------------------------------------
       for(int i = 0; i < 19; i++) { //0~18
 	 	 for(int j = 0; j < 14; j++) { //0~12
